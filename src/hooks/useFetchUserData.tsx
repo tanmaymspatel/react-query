@@ -15,7 +15,7 @@ function useFetchUserData(onSuccess: any, onError: any) {
         // refetchOnWindowFocus: true // default 
         // refetchInterval: false // data polling,
         // enabled: false //not to fetch data initially 
-        retry: 0,
+        // retry: 0,
         onSuccess: onSuccess,
         onError: onError,
         // select: (data) => {

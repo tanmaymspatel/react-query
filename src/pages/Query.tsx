@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Button, Table, createStyles } from "@mantine/core";
+import { Table, createStyles } from "@mantine/core";
 import useFetchUserData from '../hooks/useFetchUserData';
+import { useNavigate } from 'react-router-dom';
 
 const useStyle = createStyles((theme) => ({
     wrapper: {
@@ -18,6 +19,7 @@ const useStyle = createStyles((theme) => ({
 function Query() {
     const [userData, setUserData] = useState<any>([])
     const { classes } = useStyle();
+    const navigate = useNavigate()
     // const fetchUsers = async () => {
     //     return axios.get(' http://localhost:3000/users').then(res => res.data
     //     )
@@ -62,7 +64,7 @@ function Query() {
     const rows = userData?.map((user: any) => (
         <tr key={user.id}>
             <td>{user.id}</td>
-            <td >{user.title}</td>
+            <td className='cursor-pointer' onClick={() => navigate(`${user.id}`)}>{user.title}</td>
             <td>{user.userId}</td>
             <td>{user.completed ? "YES" : "NO"}</td>
         </tr>

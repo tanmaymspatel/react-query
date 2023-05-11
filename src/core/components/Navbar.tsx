@@ -62,8 +62,12 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = [
-  { link: '/simple-query', label: 'Query', icon: IconBellRinging },
-  { link: '/infinite-query', label: 'Infinite Query', icon: IconReceipt2 },
+  { link: '/simple-query-users', label: 'Query', icon: IconBellRinging },
+  { link: '/infinite-query-users', label: 'Infinite Query', icon: IconReceipt2 },
+  { link: '/parallel-query', label: 'Parallel Query', icon: IconReceipt2 },
+  { link: '/dependent-query', label: 'Dependent Query', icon: IconReceipt2 },
+  { link: '/paginated-query', label: 'Paginated Query', icon: IconReceipt2 },
+  { link: '/mutation', label: 'Mutation', icon: IconReceipt2 },
 ];
 
 function Sidebar() {
