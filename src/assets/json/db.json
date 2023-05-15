@@ -1256,6 +1256,11 @@
       "name": "The God",
       "alterEgo": "Mehul Patel",
       "id": 5
+    },
+    {
+      "name": "Spider Man",
+      "alterEgo": "Peter Parker",
+      "id": 6
     }
   ]
 }

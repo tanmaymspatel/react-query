@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Button, Input, Paper } from "@mantine/core";
 
@@ -16,9 +16,22 @@ function Mutation() {
 
     const [name, setName] = useState<string>("");
     const [alterEgo, setAlterEgo] = useState<string>("");
+    const queryClient = useQueryClient();
 
     const { data: superHeroData } = useQuery(['super-heroes'], fetchSuperHeroes)
-    const { mutate: addHero } = useMutation(addSuperHero)
+    const { mutate: addHero } = useMutation(addSuperHero, {
+        onSuccess: (data: any) => {
+            // to invalidate previous query and store the super hero cache into new query, it doen network call
+            // queryClient.invalidateQueries(['super-heroes'])
+
+            // add newly posted data to the database without network call
+            queryClient.setQueryData(['super-heroes'], (oldData: any) => {
+                return {
+                    ...oldData, data: [...oldData.data, data.data]
+                }
+            })
+        }
+    })
 
     const handleClick = useCallback(() => {
         const newHero = { name, alterEgo }
