@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
 import { Table, createStyles } from "@mantine/core"
 import { useInfiniteQuery } from "@tanstack/react-query"
+import { useInView } from "react-intersection-observer";
 import axios from "axios"
+import SingleRow from "./SingleRow";
 
 const useStyle = createStyles((theme) => ({
     wrapper: {
@@ -15,33 +18,34 @@ const useStyle = createStyles((theme) => ({
     }
 }))
 
-const fetchUsers = ({ pageParam = 1 }) => {
-    return axios.get(`http://localhost:3000/users?_limit=50&_page=${pageParam}`)
+const fetchUsers = (pageParam: number) => {
+    return axios.get(`http://localhost:3000/users?_limit=20&_page=${pageParam}`)
 }
 
-function InfiniteQuery() {
+function InfiniteScrollList() {
 
     const { classes } = useStyle();
-
-    const { data: infiniteData, fetchNextPage, hasNextPage } = useInfiniteQuery(['infinite-users'], fetchUsers, {
+    const { ref, inView } = useInView();
+    const { data: infiniteData, fetchNextPage, hasNextPage } = useInfiniteQuery(['infinite-scroll'], ({ pageParam = 1 }) => fetchUsers(pageParam), {
         getNextPageParam: (lastPage: any, allPages: any) => {
-            return lastPage.data.length === 50 ? allPages.length + 1 : undefined
+            return lastPage.data.length === 20 ? allPages.length + 1 : undefined
         }
     })
 
     const rows = infiniteData?.pages?.map((page: any) => {
-        return page.data.map((user: any) => {
-            return (
-                <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.title}</td>
-                    <td>{user.userId}</td>
-                    <td>{user.completed ? "YES" : "NO"}</td>
-                </tr>
-            )
+        return page.data.map((user: any, index: number) => {
+            if (page.length === index + 1) {
+                return <SingleRow ref={ref} key={user.id} user={user} />
+            }
+            return <SingleRow ref={ref} key={user.id} user={user} />
         })
     })
 
+    useEffect(() => {
+        if (inView && hasNextPage) {
+            fetchNextPage();
+        }
+    }, [inView, fetchNextPage, hasNextPage]);
 
     return (
         <div className={classes.wrapper}>
@@ -56,9 +60,8 @@ function InfiniteQuery() {
                 </thead>
                 <tbody>{rows}</tbody>
             </Table>
-            <button onClick={() => fetchNextPage()} disabled={!hasNextPage} >load more</button>
         </div>
     )
 }
 
-export default InfiniteQuery;
+export default InfiniteScrollList;

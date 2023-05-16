@@ -7,6 +7,7 @@ import ParallelQuery from "../../pages/ParallelQuery";
 import DependentQuery from "../../pages/DependentQuery";
 import PaginatedQuery from "../../pages/PaginatedQuery";
 import Mutation from "../../pages/Mutation";
+import InfiniteScrollList from "../../pages/InfiniteScrollList";
 
 function Routing() {
     return (
@@ -19,9 +20,11 @@ function Routing() {
             <Route path="/dependent-query" element={<DependentQuery email="tanmay@gmail.com" />} />
             <Route path="/paginated-query" element={<PaginatedQuery />} />
             <Route path="/mutation" element={<Mutation />} />
+            <Route path="/infinite-scroll-list" element={<InfiniteScrollList />} />
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     )
 }
+
 
 export default Routing;
