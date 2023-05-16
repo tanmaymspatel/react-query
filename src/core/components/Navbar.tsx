@@ -4,8 +4,6 @@ import { NavLink } from 'react-router-dom'
 import {
   IconBellRinging,
   IconReceipt2,
-  IconSwitchHorizontal,
-  IconLogout,
 } from '@tabler/icons-react';
 
 const useStyles = createStyles((theme) => ({
