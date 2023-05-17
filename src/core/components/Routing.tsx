@@ -8,6 +8,8 @@ import DependentQuery from "../../pages/DependentQuery";
 import PaginatedQuery from "../../pages/PaginatedQuery";
 import Mutation from "../../pages/Mutation";
 import InfiniteScrollList from "../../pages/InfiniteScrollList";
+import Crud from "../../pages/Crud";
+import SuperHeroForm from "../../components/crud/SuperHeroForm";
 
 function Routing() {
     return (
@@ -21,6 +23,9 @@ function Routing() {
             <Route path="/paginated-query" element={<PaginatedQuery />} />
             <Route path="/mutation" element={<Mutation />} />
             <Route path="/infinite-scroll-list" element={<InfiniteScrollList />} />
+            <Route path="/crud" element={<Crud />} />
+            <Route path="/superhero-form" element={<SuperHeroForm />} />
+            <Route path="/superhero-form/:id/edit" element={<SuperHeroForm />} />
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     )

@@ -1,32 +1,20 @@
 import { useState, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { Button, Group, Input, Paper, Text } from "@mantine/core";
 
-const fetchSuperHeroes = () => {
-    return axios.get("http://localhost:3000/superHeroes")
-}
-const deleteSuperHero = (id: number) => {
-    return axios.delete(`http://localhost:3000/superHeroes/${id}`)
-}
-// to be added in useMutation
-const addSuperHero = (hero: any) => {
-    return axios.post("http://localhost:3000/superHeroes", hero)
-}
-
-
+import queryServices from '../shared/QueryServices'
 
 function Mutation() {
 
     const [name, setName] = useState<string>("");
     const [alterEgo, setAlterEgo] = useState<string>("");
     const queryClient = useQueryClient();
+    const { fetchSuperHeroes, deleteSuperHero, addSuperHero } = queryServices;
 
     const updateList = (data: any) => {
         queryClient.setQueryData(['super-heroes'], (oldData: any) => {
-            return {
-                ...oldData, data: [...oldData.data, data.data]
-            }
+            oldData.push(data);
+            return oldData;
         })
     }
 
@@ -52,7 +40,7 @@ function Mutation() {
         setAlterEgo("");
     }, [name, alterEgo, addHero])
 
-    const deleteHeroHandler = (id: number) => {
+    const deleteHeroHandler = (id: string) => {
         deleteHero(id)
     }
 
@@ -79,7 +67,7 @@ function Mutation() {
             </div>
             <div>
                 {
-                    superHeroData?.data.map((hero: any) => {
+                    superHeroData?.map((hero: any) => {
                         return (
                             <div key={hero.id}>
                                 <Paper my={"sm"} p={"sm"}>

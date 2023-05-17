@@ -67,6 +67,7 @@ const data = [
   { link: '/paginated-query', label: 'Paginated Query', icon: IconReceipt2 },
   { link: '/mutation', label: 'Mutation', icon: IconReceipt2 },
   { link: '/infinite-scroll-list', label: 'Infinite Scroll List', icon: IconReceipt2 },
+  { link: '/crud', label: 'Crud', icon: IconReceipt2 },
 ];
 
 function Sidebar() {
