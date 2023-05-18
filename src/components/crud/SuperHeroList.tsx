@@ -1,19 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import queryServices from '../../shared/QueryServices'
+// With useQueryClient hook, we can get access of queryClient instance with which we can manage caching, fetching, updating
 import { Button, Group, Paper, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
+import queryServices from '../../shared/QueryServices'
+
 function SuperHeroList() {
-    const { fetchSuperHeroes, deleteSuperHero } = queryServices;
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const { fetchSuperHeroes, deleteSuperHero } = queryServices;
+    // data fetching 
     const { data: superHeroData } = useQuery(['crud-super-heroes'], fetchSuperHeroes);
+    // deleting the data
     const { mutate: deleteHero } = useMutation(deleteSuperHero, {
         onSuccess: () => {
             queryClient.invalidateQueries(['crud-super-heroes'])
-        }
-    })
+        },
+        // onError:()=>{
 
+        // }
+    })
+    // deleting data by id
     const deleteHeroHandler = (id: string) => {
         deleteHero(id);
     }

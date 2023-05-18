@@ -3,7 +3,7 @@ import { Table, createStyles } from "@mantine/core"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { useInView } from "react-intersection-observer";
 import axios from "axios"
-import SingleRow from "./SingleRow";
+import SingleRow from "../components/SingleRow";
 
 const useStyle = createStyles((theme) => ({
     wrapper: {
@@ -25,6 +25,8 @@ const fetchUsers = (pageParam: number) => {
 function InfiniteScrollList() {
 
     const { classes } = useStyle();
+    // ref - reference of the element 
+    // inview - if the referenced element is in viewport or not
     const { ref, inView } = useInView();
     const { data: infiniteData, fetchNextPage, hasNextPage } = useInfiniteQuery(['infinite-scroll'], ({ pageParam = 1 }) => fetchUsers(pageParam), {
         getNextPageParam: (lastPage: any, allPages: any) => {
@@ -35,6 +37,7 @@ function InfiniteScrollList() {
     const rows = infiniteData?.pages?.map((page: any) => {
         return page.data.map((user: any, index: number) => {
             if (page.length === index + 1) {
+                // giving reference to the last row
                 return <SingleRow ref={ref} key={user.id} user={user} />
             }
             return <SingleRow ref={ref} key={user.id} user={user} />

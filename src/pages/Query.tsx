@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Table, createStyles } from "@mantine/core";
-import useFetchUserData from '../hooks/useFetchUserData';
+import { Button, Table, createStyles } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
+
+import useFetchUserData from '../hooks/useFetchUserData';
 
 const useStyle = createStyles((theme) => ({
     wrapper: {
@@ -17,28 +18,24 @@ const useStyle = createStyles((theme) => ({
 }))
 
 function Query() {
-    const [userData, setUserData] = useState<any>([])
     const { classes } = useStyle();
-    const navigate = useNavigate()
-    // const fetchUsers = async () => {
-    //     return axios.get(' http://localhost:3000/users').then(res => res.data
-    //     )
-    // }
-
+    const navigate = useNavigate();
+    // method called on successfull data fetching
     const onSuccess = (data: any) => {
         console.log("on success", data);
     }
+    // method call on unsuccessfull data fetching
     const onError = (error: any) => {
         console.log("on Error", error);
     }
 
     const {
-        data,
+        data: userData,
         isLoading,
         isError,
         error,
         isFetching,
-        // refetch 
+        refetch
     } = useFetchUserData(onSuccess, onError)
     // = useQuery(['user-details'], fetchUsers, {
     //     // cacheTime: 5000, // in miliseconds 
@@ -55,7 +52,7 @@ function Query() {
     //     // } // to transform the data
     // })
 
-    console.log({ isLoading, isFetching });
+    // console.log({ isLoading, isFetching });
 
     if (isError) {
         return <h2>{(error as any).message}</h2>
@@ -70,9 +67,6 @@ function Query() {
         </tr>
     ))
 
-    useEffect(() => {
-        setUserData(data)
-    }, [data])
     return (
         <div className={classes.wrapper}>
             {/* {!userData && <Button onClick={() => refetch()}>Fetch Users</Button>} */}
@@ -88,8 +82,9 @@ function Query() {
                 <tbody>{rows}</tbody>
             </Table>
             {/* {
-                userData.map((title: any, i: number) => {
+                userData?.map((title: any, i: number) => {
                     return (
+                        // for mapping (select option)
                         <div key={i}>
                             <p>{title}</p>
                         </div>
@@ -100,4 +95,4 @@ function Query() {
     )
 }
 
-export default Query
+export default Query;

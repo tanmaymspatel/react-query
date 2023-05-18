@@ -12,7 +12,6 @@ function ParallelQuery() {
     const { data: userData } = useQuery(['users'], fetchUsers);
     const { data: employeeData } = useQuery(['employees'], fetchEmployees);
 
-
     console.log({ userData, employeeData });
 
     return (

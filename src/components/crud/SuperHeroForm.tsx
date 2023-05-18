@@ -7,52 +7,49 @@ import queryServices from '../../shared/QueryServices'
 
 function SuperHeroForm() {
     let { id } = useParams();
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    // data fetching by id 
     const { data: superHeroData } = useQuery(['crud-super-hero', id], () => fetchSuperHeroById(id as string), {
-        enabled: !!id
+        enabled: !!id // invokes hook only after the id is available i.e in edit mode
     })
     const newName = id && superHeroData?.name ? superHeroData?.name : "";
     const newAlterEgo = id && superHeroData?.alterEgo ? superHeroData?.alterEgo : "";
     const [name, setName] = useState<string>(newName);
     const [alterEgo, setAlterEgo] = useState<string>(newAlterEgo);
     const { addSuperHero, fetchSuperHeroById, editSuperHeroById } = queryServices;
-    const queryClient = useQueryClient();
-    const navigate = useNavigate();
-
-    // const editName = superHeroData?.name;
-    // const editAlterEgo = superHeroData?.alterEgo
-
+    // setting valu of form fiels in edit mode
     useEffect(() => {
         if (id) {
             setName(newName)
             setAlterEgo(newAlterEgo)
         }
     }, [id, newName, newAlterEgo])
-
-    useEffect(() => {
-        console.log({ name, alterEgo });
-    }, [alterEgo, name]);
-
+    // adding new data 
     const { mutate: addHero } = useMutation(addSuperHero, {
         onSuccess: () => {
+            //invalidates present query for the updation of the data records
             queryClient.invalidateQueries(['crud-super-heroes'])
         }
     });
-
+    // data getting from form submission
     const newHero = {
         id, name, alterEgo
     }
-
+    // editing the data
     const { mutate: editHero } = useMutation(() => editSuperHeroById(newHero), {
         onSuccess: () => queryClient.invalidateQueries(['crud-super-heroes'])
     })
-
-    const handleClick = useCallback(() => {
+    /**
+     * @name handleClick
+     * @description adding and editing the data, resetting the form values and navigate to list
+     */
+    const handleClick = () => {
         id ? editHero(newHero as any) : addHero(newHero);
-        console.log(newHero);
         setName("");
         setAlterEgo("");
         navigate('/crud');
-    }, [name, alterEgo]);
+    }
 
     return (
         <div>

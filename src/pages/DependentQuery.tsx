@@ -1,25 +1,25 @@
 import { Paper } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-
+// fetching all data
 const fetchPerson = (email: string) => {
     return axios.get(`http://localhost:3000/person/${email}`)
 }
-
+// fetching data by specific id
 const fetchCoursesByChannelId = (channelId: string) => {
     return axios.get(`http://localhost:3000/channels/${channelId}`)
 }
-
+/**
+ * @returns Dependent query component
+ */
 function DependentQuery({ email }: any) {
-
+    // fetching all data
     const { data: person } = useQuery(['person', email], () => fetchPerson(email))
-    const channelId = person?.data.channelId
-
+    const channelId = person?.data.channelId;
+    // fetching data by email id
     const { data: channelData } = useQuery(['courses', channelId], () => fetchCoursesByChannelId(channelId), {
-        enabled: !!channelId // query will only fire if there is any channel id
+        enabled: !!channelId // query will only fire if there is any channel id, that is called dependent query
     })
-    console.log({ person, channelData, channelId });
-
 
     return (
         <div>
@@ -38,5 +38,5 @@ function DependentQuery({ email }: any) {
     )
 }
 
-export default DependentQuery
+export default DependentQuery;
 

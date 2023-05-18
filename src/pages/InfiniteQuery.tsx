@@ -15,7 +15,7 @@ const useStyle = createStyles((theme) => ({
     }
 }))
 
-const fetchUsers = ({ pageParam = 1 }) => {
+const fetchUsers = (pageParam: number) => {
     return axios.get(`http://localhost:3000/users?_limit=50&_page=${pageParam}`)
 }
 
@@ -23,7 +23,7 @@ function InfiniteQuery() {
 
     const { classes } = useStyle();
 
-    const { data: infiniteData, fetchNextPage, hasNextPage } = useInfiniteQuery(['infinite-users'], fetchUsers, {
+    const { data: infiniteData, fetchNextPage, hasNextPage } = useInfiniteQuery(['infinite-users'], ({ pageParam = 1 }) => fetchUsers(pageParam), {
         getNextPageParam: (lastPage: any, allPages: any) => {
             return lastPage.data.length === 50 ? allPages.length + 1 : undefined
         }

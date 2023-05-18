@@ -10,7 +10,9 @@ import Mutation from "../../pages/Mutation";
 import InfiniteScrollList from "../../pages/InfiniteScrollList";
 import Crud from "../../pages/Crud";
 import SuperHeroForm from "../../components/crud/SuperHeroForm";
-
+/**
+ * @returns  routing for the application
+ */
 function Routing() {
     return (
         <Routes>
@@ -30,6 +32,5 @@ function Routing() {
         </Routes>
     )
 }
-
 
 export default Routing;

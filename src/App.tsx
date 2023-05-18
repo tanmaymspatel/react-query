@@ -17,6 +17,7 @@ const theme = {
 
 function App() {
 
+  // instance provided for data cacheing and date handling across the app
   const queryClient = new QueryClient()
 
   return (

@@ -1,13 +1,15 @@
 import { useParams } from "react-router-dom";
-import useFetchSingleUserData from "../hooks/useFetchSingleUserData";
 import { useEffect, useState } from "react";
 import { Paper } from "@mantine/core";
 
+import useFetchSingleUserData from "../hooks/useFetchSingleUserData";
+/**
+ * @returns details of perticular user from id
+ */
 function UserDetails() {
     const { userId } = useParams();
     const { data, isLoading } = useFetchSingleUserData(userId as string);
     const [userDetails, setUSerDetails] = useState<any>({})
-
 
     useEffect(() => {
         setUSerDetails(data)

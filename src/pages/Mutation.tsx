@@ -12,14 +12,19 @@ function Mutation() {
     const { fetchSuperHeroes, deleteSuperHero, addSuperHero } = queryServices;
 
     const updateList = (data: any) => {
+        // to update the present query
         queryClient.setQueryData(['super-heroes'], (oldData: any) => {
             oldData.push(data);
             return oldData;
         })
     }
-
+    // fetching all data
     const { data: superHeroData } = useQuery(['super-heroes'], fetchSuperHeroes)
+    // add new data
     const { mutate: addHero } = useMutation(addSuperHero, {
+        /**
+         * @param data the recent single data object got by submitting the form value
+         */
         onSuccess: (data: any) => {
             // to invalidate previous query and store the super hero cache into new query, it doen network call
             // queryClient.invalidateQueries(['super-heroes'])
@@ -28,18 +33,21 @@ function Mutation() {
             updateList(data);
         }
     })
-
+    // delete data by id
     const { mutate: deleteHero } = useMutation(deleteSuperHero, {
+        // invalidate the present query and fire an other one with updated data
         onSuccess: () => queryClient.invalidateQueries(['super-heroes'])
     })
-
+    /**
+     * @description to add new data to the db, reset form values
+     */
     const handleClick = useCallback(() => {
         const newHero = { name, alterEgo }
         addHero(newHero);
         setName("");
         setAlterEgo("");
     }, [name, alterEgo, addHero])
-
+    // delete the data by id
     const deleteHeroHandler = (id: string) => {
         deleteHero(id)
     }
